@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Kiblah ERP</title>
@@ -43,25 +42,64 @@
 
 <body>
 
-    {{-- side bar start --}}
-    @include('admin.layouts.sidebar')
-    {{-- side bar end --}}
+    <section class="auth forgot-password-page bg-base d-flex flex-wrap">
+        <div class="auth-left d-lg-block d-none">
+            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
+                <img src="{{ asset('admin/assets/images/auth/forgot-pass-img.png') }}" alt="">
+            </div>
+        </div>
+        <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
+            <div class="max-w-464-px mx-auto w-100">
+                <div>
+                    <h4 class="mb-12">Forgot Password</h4>
+                    <p class="mb-32 text-secondary-light text-lg">Enter the email address associated with your account
+                        and we will send you a link to reset your password.</p>
+                </div>
 
-    <main class="dashboard-main">
+                @if (session()->has('success'))
+                    <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-5 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
+                        role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            {{ session()->get('success') }}
+                        </div>
+                        <button class="remove-button text-success-600 text-xxl line-height-1">
+                            <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
+                        </button>
+                    </div>
+                @endif
 
-        {{-- navbar start --}}
-        @include('admin.layouts.navbar')
-        {{-- navbar end --}}
+                <form action="{{ route('admin.send-reset-password-link') }}" method="POST" class="needs-validation"
+                    novalidate="">
 
-        {{-- content start --}}
-        @yield('content')
-        {{-- content end --}}
+                    @csrf
 
-        {{-- footer start --}}
-        @include('admin.layouts.footer')
-        {{-- footer end --}}
+                    <div class="icon-field  has-validation">
+                        <span class="icon top-50 translate-middle-y">
+                            <iconify-icon icon="mage:email"></iconify-icon>
+                        </span>
+                        <input type="email"
+                            class="form-control h-56-px bg-neutral-50 radius-12  @error('email') is-invalid @enderror"
+                            placeholder="Enter Email" name="email" required>
 
-    </main>
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32">Continue</button>
+
+                    <div class="text-center">
+                        <a href="{{ route('admin.login') }}" class="text-primary-600 fw-bold mt-24">Back to Login</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
 
     <!-- jQuery library js -->
     <script src="{{ asset('admin/assets/js/lib/jquery-3.7.1.min.js') }}"></script>
@@ -93,15 +131,30 @@
     <script src="{{ asset('admin/assets/js/app.js') }}"></script>
 
     <script>
-        // add csrf token in ajx request
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+        (() => {
+            "use strict"
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll(".needs-validation")
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener("submit", event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add("was-validated")
+                }, false)
+            })
+        })();
+
+        $(".remove-button").on("click", function() {
+            $(this).closest(".alert").addClass("d-none")
         });
     </script>
 
-    @stack('scripts')
 </body>
 
 </html>

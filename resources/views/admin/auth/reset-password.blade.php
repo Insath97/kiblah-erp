@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Kiblah ERP</title>
 
-    <link rel="icon" type="image/png" href="{{ 'admin/assets/images/favicon.png' }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ asset('admin/assets/images/favicon.png') }}" sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/remixicon.css') }}">
     <!-- BootStrap css -->
@@ -41,21 +41,19 @@
 </head>
 
 <body>
-
-    <section class="auth bg-base d-flex flex-wrap">
+    <section class="auth reset-password-page bg-base d-flex flex-wrap">
         <div class="auth-left d-lg-block d-none">
             <div class="d-flex align-items-center flex-column h-100 justify-content-center">
-                <img src="{{ asset('admin/assets/images/auth/auth-img.png') }}" alt="">
+                <img src="{{ asset('admin/assets/images/auth/forgot-pass-img.png') }}" alt="">
             </div>
         </div>
         <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
             <div class="max-w-464-px mx-auto w-100">
                 <div>
-                    <a href="{{ route('admin.login') }}" class="mb-40 max-w-290-px">
-                        <img src="{{ asset('admin/assets/images/logo.png') }}" alt="">
-                    </a>
-                    <h4 class="mb-12">Sign In to your Account</h4>
-                    <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
+                    <h4 class="mb-12">Reset Password</h4>
+                    <p class="mb-32 text-secondary-light text-lg">
+                        Enter your new password below to reset your account password.
+                    </p>
                 </div>
 
                 @if (session()->has('success'))
@@ -70,19 +68,17 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.handle-login') }}" method="POST" class="needs-validation"
-                    novalidate="">
-
+                <form action="" method="POST" class="needs-validation" novalidate="">
                     @csrf
+                    <input type="hidden" name="token" value="{{ $token }}">
 
-                    {{-- email field --}}
-                    <div class="icon-field mb-16  has-validation">
+                    <div class="icon-field mb-16 has-validation">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="mage:email"></iconify-icon>
                         </span>
-                        <input type="email" name="email"
+                        <input type="email"
                             class="form-control h-56-px bg-neutral-50 radius-12  @error('email') is-invalid @enderror"
-                            placeholder="Email" required>
+                            placeholder="Enter Email" value="{{ @request()->email }}" readonly name="email">
 
                         @error('email')
                             <div class="invalid-feedback">
@@ -91,20 +87,13 @@
                         @enderror
                     </div>
 
-                    {{-- password field --}}
-                    <div class="position-relative mb-20">
-                        <div class="icon-field  has-validation">
-                            <span class="icon top-50 translate-middle-y">
-                                <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
-                            </span>
-                            <input type="password"
-                                class="form-control h-56-px bg-neutral-50 radius-12  @error('password') is-invalid @enderror"
-                                id="your-password" name="password" placeholder="Password" required>
-                        </div>
-                        <span
-                            class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
-                            data-toggle="#your-password">
+                    <div class="icon-field mb-16 has-validation">
+                        <span class="icon top-50 translate-middle-y">
+                            <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                         </span>
+                        <input type="password" name="password"
+                            class="form-control h-56-px bg-neutral-50 radius-12 @error('password') is-invalid @enderror"
+                            placeholder="Enter New Password" required>
 
                         @error('password')
                             <div class="invalid-feedback">
@@ -113,27 +102,33 @@
                         @enderror
                     </div>
 
-                    <div class="">
-                        <div class="d-flex justify-content-between gap-2">
-                            <div class="form-check style-check d-flex align-items-center">
-                                <input class="form-check-input border border-neutral-300" type="checkbox"
-                                    name="remember" value="" id="remeber">
-                                <label class="form-check-label" for="remeber">Remember me </label>
+                    <div class="icon-field mb-16 has-validation">
+                        <span class="icon top-50 translate-middle-y">
+                            <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
+                        </span>
+                        <input type="password" name="password_confirmation"
+                            class="form-control h-56-px bg-neutral-50 radius-12 @error('password_confirmation') is-invalid @enderror"
+                            placeholder="Confirm New Password" required>
+
+                        @error('password_confirmation')
+                            <div class="invalid-feedback">
+                                {{ $message }}
                             </div>
-                            <a href="{{ route('admin.forgot-password') }}" class="text-primary-600 fw-medium">Forgot
-                                Password?</a>
-                        </div>
+                        @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32">
-                        Sign In
-                    </button>
+                    <button type="submit"
+                        class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32">Reset Password</button>
 
+                    <div class="text-center">
+                        <a href="{{ route('admin.login') }}" class="text-primary-600 fw-bold mt-24">Back to Login</a>
+                    </div>
                 </form>
-
             </div>
         </div>
     </section>
+
+
 
     <!-- jQuery library js -->
     <script src="{{ asset('admin/assets/js/lib/jquery-3.7.1.min.js') }}"></script>
@@ -164,46 +159,7 @@
     <!-- main js -->
     <script src="{{ asset('admin/assets/js/app.js') }}"></script>
 
-    <script>
-        function initializePasswordToggle(toggleSelector) {
-            $(toggleSelector).on("click", function() {
-                $(this).toggleClass("ri-eye-off-line");
-                var input = $($(this).attr("data-toggle"));
-                if (input.attr("type") === "password") {
-                    input.attr("type", "text");
-                } else {
-                    input.attr("type", "password");
-                }
-            });
-        }
 
-        // Call the function
-        initializePasswordToggle(".toggle-password");
-
-        /* validation check */
-        (() => {
-            "use strict"
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll(".needs-validation")
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener("submit", event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add("was-validated")
-                }, false)
-            })
-        })();
-
-        $(".remove-button").on("click", function() {
-            $(this).closest(".alert").addClass("d-none")
-        });
-    </script>
 </body>
 
 </html>
