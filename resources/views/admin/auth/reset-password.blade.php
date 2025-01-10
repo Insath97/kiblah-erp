@@ -68,7 +68,8 @@
                     </div>
                 @endif
 
-                <form action="" method="POST" class="needs-validation" novalidate="">
+                <form action="{{ route('admin.update-password') }}" method="POST" class="needs-validation"
+                    novalidate="">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
 
