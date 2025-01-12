@@ -3,7 +3,7 @@
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
     </button>
     <div>
-        <a href="index.php" class="sidebar-logo">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-logo">
             <img src="{{ asset('admin/assets/images/logo.png') }}" alt="site logo" class="light-logo">
             <img src="{{ asset('admin/assets/images/logo-light.png') }}" alt="site logo" class="dark-logo">
             <img src="{{ asset('admin/assets/images/logo-icon.png') }}" alt="site logo" class="logo-icon">
@@ -13,10 +13,24 @@
         <ul class="sidebar-menu" id="sidebar-menu">
 
             {{-- dasboard --}}
-            <li>
-                <a href="#">
+            <li class="active">
+                <a href="{{ route('admin.dashboard') }}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="sidebar-menu-group-title">Inventory</li>
+            <li>
+                <a href="product.html">
+                    <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.product-category.index') }}">
+                    <iconify-icon icon="mage:dashboard-plus" class="menu-icon"></iconify-icon>
+                    <span>Category</span>
                 </a>
             </li>
 
@@ -133,8 +147,8 @@
                             Languages</a>
                     </li>
                     <li>
-                        <a href="payment-gateway.php"><i
-                                class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Payment Gateway</a>
+                        <a href="payment-gateway.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>
+                            Payment Gateway</a>
                     </li>
                 </ul>
             </li>

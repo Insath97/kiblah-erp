@@ -59,15 +59,15 @@
                 </div>
 
                 @if (session()->has('success'))
-                <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-3 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
-                    role="alert">
-                    <div class="d-flex align-items-center gap-2">
-                        {{ session()->get('success') }}
+                    <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-3 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
+                        role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            {{ session()->get('success') }}
+                        </div>
+                        <button class="remove-button text-success-600 text-xxl line-height-1">
+                            <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
+                        </button>
                     </div>
-                    <button class="remove-button text-success-600 text-xxl line-height-1">
-                        <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
-                    </button>
-                </div>
                 @endif
 
                 <form action="{{ route('admin.handle-login') }}" method="POST" class="needs-validation"
@@ -82,16 +82,19 @@
                         </span>
                         <input type="email" name="email"
                             class="form-control h-56-px bg-neutral-50 radius-12  @error('email') is-invalid @enderror"
-                            placeholder="Email" required>
+                            placeholder="Email" value="{{ old('email') }}" required>
 
+                        <div class="@error('email') is-invalid @enderror">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
                     </div>
 
-                    @error('email')
-                    <div class="-mt-4 bg-green-400">
-                        {{ $message }}
-                    </div>
-                    @enderror
+
 
                     {{-- password field --}}
                     <div class="position-relative mb-20">
@@ -101,18 +104,20 @@
                             </span>
                             <input type="password"
                                 class="form-control h-56-px bg-neutral-50 radius-12  @error('password') is-invalid @enderror"
-                                id="your-password" name="password" placeholder="Password" required>
+                                id="your-password" name="password"  placeholder="Password" required>
+
+                            <div>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
                         <span
                             class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
                             data-toggle="#your-password">
                         </span>
-
-                        @error('password')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
 
                     <div class="">
