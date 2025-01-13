@@ -24,11 +24,15 @@
                     Create New
                 </button>
             </div>
-
             <div class="card-body">
                 <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
                     <thead>
                         <tr>
+                            <th scope="col">
+                                <div class="form-check style-check d-flex align-items-center">
+                                    #
+                                </div>
+                            </th>
                             <th scope="col">Code</th>
                             <th scope="col">Name</th>
                             <th scope="col">Description</th>
@@ -37,9 +41,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-primary-600">1001</td>
                             <td>
-                                <h6 class="text-md mb-0 fw-medium flex-grow-1">Kathryn Murphy</h6>
+                                <div class="form-check style-check d-flex align-items-center">
+                                    <input class="form-check-input" type="hidden">
+                                    <label class="form-check-label">
+                                        01
+                                    </label>
+                                </div>
+                            </td>
+                            <td>#526534</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <h6 class="text-md mb-0 fw-medium flex-grow-1">Kathryn Murphy</h6>
+                                </div>
                             </td>
                             <td>Description</td>
                             <td>
@@ -58,6 +72,7 @@
                             </td>
                         </tr>
 
+                    </tbody>
                 </table>
             </div>
         </div>
