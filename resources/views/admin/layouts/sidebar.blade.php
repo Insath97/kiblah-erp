@@ -22,7 +22,7 @@
 
             <li class="sidebar-menu-group-title">Inventory</li>
             <li>
-                <a href="product.html">
+                <a href="{{ route('admin.products.index') }}">
                     <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
                     <span>Products</span>
                 </a>

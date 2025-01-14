@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
@@ -25,9 +27,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
 
+    /* profile setup */
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+
     /* dasboard */
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     /* product category */
     Route::resource('product-category', ProductCategoryController::class);
+
+    /* product */
+    Route::resource('products', ProductController::class);
 });
