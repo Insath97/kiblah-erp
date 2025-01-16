@@ -36,7 +36,7 @@
 
             <li class="sidebar-menu-group-title">Application</li>
 
-            <li class="dropdown">
+           {{--  <li class="dropdown">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
@@ -81,7 +81,7 @@
                             Inventory </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
             <li class="dropdown">
                 <a href="javascript:void(0)">
@@ -107,7 +107,6 @@
                     </li>
                 </ul>
             </li>
-
 
             <li>
                 <a href="blank-page.php">
