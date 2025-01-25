@@ -24,7 +24,10 @@
 
                     <!-- Form Wizard Start -->
                     <div class="form-wizard">
-                        <form action="#" method="post">
+                        <form action="{{ route('admin.products.store') }}" method="post" enctype="multipart/form-data">
+
+                            @csrf
+
                             <div class="form-wizard-header overflow-x-auto scroll-sm pb-8 my-32">
                                 <ul class="list-unstyled form-wizard-list">
                                     <li class="form-wizard-list__item active">
@@ -66,39 +69,54 @@
                                 <h6 class="text-md text-neutral-500">Product Details</h6>
                                 <div class="row gy-3">
                                     <div class="col-sm-6">
+                                        <label class="form-label">Product Code*</label>
+                                        <div class="position-relative">
+                                            <input type="text" class="form-control wizard-required" name="code"
+                                                placeholder="Enter code" required>
+                                            <div class="wizard-form-error"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
                                         <label class="form-label">Product Name*</label>
                                         <div class="position-relative">
-                                            <input type="text" id="product_name" name="product_name"
+                                            <input type="text" id="product_name" name="name"
                                                 class="form-control wizard-required" placeholder="Enter Product Name"
                                                 required>
                                             <div class="wizard-form-error"></div>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <label class="form-label">Category*</label>
                                         <div class="position-relative">
-                                            <select class="form-control wizard-required" required>
-                                                <option value="food">Food</option>
-                                                <option value="ingredients">Ingredients</option>
-                                                <option value="meat">Meat</option>
-                                                <option value="oils">Oils</option>
-                                                <option value="inventory">Inventory</option>
+                                            <select class="form-control wizard-required" name="product_category_id"
+                                                required>
+                                                <option value="">Select Product Category</option>
+                                                @if ($productCategories->count() > 0)
+                                                    @foreach ($productCategories as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                             <div class="wizard-form-error"></div>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Description*</label>
-                                        <div class="position-relative">
-                                            <textarea class="form-control wizard-required" placeholder="Enter Product Description" required></textarea>
-                                            <div class="wizard-form-error"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
+
+                                    <div class="col-sm-6">
                                         <label class="form-label">Unit of Measurement*</label>
                                         <div class="position-relative">
                                             <input type="text" class="form-control wizard-required"
-                                                placeholder="Enter Unit (e.g., kg, liter, piece)" required>
+                                                name="unit_measurement" placeholder="Enter Unit (e.g., kg, liter, piece)"
+                                                required>
+                                            <div class="wizard-form-error"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Description*</label>
+                                        <div class="position-relative">
+                                            <textarea class="form-control wizard-required" name="description" placeholder="Enter Product Description"></textarea>
                                             <div class="wizard-form-error"></div>
                                         </div>
                                     </div>
@@ -116,7 +134,7 @@
                                     <div class="col-sm-6">
                                         <label class="form-label">Price*</label>
                                         <div class="position-relative">
-                                            <input type="number" class="form-control wizard-required"
+                                            <input type="number" class="form-control wizard-required" name="price"
                                                 placeholder="Enter Price" required>
                                             <div class="wizard-form-error"></div>
                                         </div>
@@ -124,7 +142,7 @@
                                     <div class="col-sm-6">
                                         <label class="form-label">Cost Price*</label>
                                         <div class="position-relative">
-                                            <input type="number" class="form-control wizard-required"
+                                            <input type="number" class="form-control wizard-required" name="sales_price"
                                                 placeholder="Enter Cost Price" required>
                                             <div class="wizard-form-error"></div>
                                         </div>
@@ -147,7 +165,7 @@
                                     <div class="col-6">
                                         <label class="form-label">Stock Quantity*</label>
                                         <div class="position-relative">
-                                            <input type="number" class="form-control wizard-required"
+                                            <input type="number" class="form-control wizard-required" name="stock_qty"
                                                 placeholder="Enter Stock Quantity" required>
                                             <div class="wizard-form-error"></div>
                                         </div>
@@ -155,7 +173,7 @@
                                     <div class="col-6">
                                         <label class="form-label">Reorder Level*</label>
                                         <div class="position-relative">
-                                            <input type="number" class="form-control wizard-required"
+                                            <input type="number" class="form-control wizard-required" name="threshold"
                                                 placeholder="Enter Reorder Level" required>
                                             <div class="wizard-form-error"></div>
                                         </div>
@@ -176,7 +194,7 @@
                                     <div class="col-12">
                                         <label class="form-label">Product Image*</label>
                                         <div class="position-relative">
-                                            <input type="file" class="form-control wizard-required" required>
+                                            <input type="file" class="form-control wizard-required" name="image">
                                             <div class="wizard-form-error"></div>
                                         </div>
                                     </div>

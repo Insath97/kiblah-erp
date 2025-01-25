@@ -39,6 +39,13 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/lib/audioplayer.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
+
+    <style>
+        .swal2-popup {
+            font-size: 14px !important;
+            /* Adjust font size here */
+        }
+    </style>
 </head>
 
 <body>
@@ -91,6 +98,8 @@
 
     <!-- main js -->
     <script src="{{ asset('admin/assets/js/app.js') }}"></script>
+    {{-- sweet alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         // add csrf token in ajx request
@@ -99,7 +108,73 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        /* set delete common function */
+        $(document).ready(function() {
+            $('.delete-item').on('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let url = $(this).attr('href');
+                        $.ajax({
+                            method: "DELETE",
+                            url: url,
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: data.message,
+                                        icon: 'success'
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else if (data.status === 'error') {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: data.message,
+                                        icon: 'error'
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while deleting the item.',
+                                    icon: 'error'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        /* set toast */
+        @if (session('toast'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Top-right corner
+                icon: "{{ session('toast')['type'] }}", // success, error, warning, info
+                title: "{{ session('toast')['message'] }}",
+                showConfirmButton: false,
+                timer: {{ session('toast')['autoClose'] ?? 3000 }}, // Default to 3 seconds
+                timerProgressBar: true,
+            });
+        @endif
     </script>
+
+    @include('sweetalert::alert')
 
     @stack('scripts')
 </body>

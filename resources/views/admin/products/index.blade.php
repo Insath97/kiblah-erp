@@ -27,57 +27,69 @@
                         <tr>
                             <th scope="col">
                                 <div class="form-check style-check d-flex align-items-center">
-                                    <input class="form-check-input" type="checkbox">
-
+                                    #
                                 </div>
                             </th>
                             <th scope="col">Code</th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Cost Price</th>
+                            {{-- <th scope="col">Unit Measurement</th> --}}
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Threshold</th>
+                            <th scope="col">status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="form-check style-check d-flex align-items-center">
-                                    <input class="form-check-input" type="checkbox">
-                                    <label class="form-check-label">
-                                        01
-                                    </label>
-                                </div>
-                            </td>
-                            <td><a href="javascript:void(0)" class="text-primary-600">#526534</a></td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="assets/images/user-list/user-list1.png" alt=""
+
+                        @if ($product->count() > 0)
+                            @foreach ($product as $item)
+                                <tr>
+                                    <td>
+                                        <div class="form-check style-check d-flex align-items-center">
+                                            <input class="form-check-input" type="hidden">
+                                            <label class="form-check-label">
+                                                {{ $loop->iteration }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $item->code }}</td>
+                                    <td>
+                                        <img src="{{ asset($item->image) }}" height="100" width="100" alt=""
                                         class="flex-shrink-0 me-12 radius-8">
-                                    <h6 class="text-md mb-0 fw-medium flex-grow-1">Kathryn Murphy</h6>
-                                </div>
-                            </td>
-                            <td>Description</td>
-                            <td>100</td>
-                            <td> <span
-                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Have
-                                    stock</span>
-                            </td>
-                            <td>
-                                <a href="javascript:void(0)"
-                                    class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                                    <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                </a>
-                                <a href="javascript:void(0)"
-                                    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                    <iconify-icon icon="lucide:edit"></iconify-icon>
-                                </a>
-                                <a href="javascript:void(0)"
-                                    class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                    <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                </a>
-                            </td>
-                        </tr>
+                                    </td>
+                                    <td> <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $item->name }}</h6></td>
+                                    <td>{{ @$item->productCategory->name }}</td>
+                                    <td>{{ $item->price }}</td>
+                                    <td>{{ $item->sales_price }}</td>
+                                    {{-- <td>{{ $item->unit_measurement }}</td> --}}
+                                    <td>{{ $item->stock_qty }}</td>
+                                    <td>{{ $item->threshold }}</td>
+                                    <td> <span
+                                            class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Have
+                                            stock</span>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)"
+                                            class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                        </a>
+                                        <a href="javascript:void(0)"
+                                            class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                        </a>
+                                        <a href="{{ route('admin.products.destroy', $item->id) }}"
+                                            class="w-32-px h-32-px delete-item bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+
                     </tbody>
                 </table>
             </div>
